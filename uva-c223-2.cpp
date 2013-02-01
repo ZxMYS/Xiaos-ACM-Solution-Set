@@ -1,0 +1,87 @@
+#include<stdio.h>
+#define min(a,b) ((a)<(b)?(a):(b))
+#define abs(a) ((a)<0?-(a):(a))
+struct st{int b0,b1,c,tb;}s[10001][2];
+int n,m,x,i,j,k,t,t1,t2;
+bool back[10001];
+int main(){
+freopen("in.txt","r",stdin);
+freopen("out","w",stdout);
+
+scanf("%d\n",&x);
+while(x){
+x--;
+scanf("%d\n",&n);
+s[0][0].b1=10;
+s[0][0].b0=10;
+s[0][0].c=0;
+s[0][1]=s[0][0];
+t=0;
+for(i=1;i<=n;i++){
+                  scanf("%d%d",&j,&k);
+                  if(j!=t){
+                  t1=abs(s[i-1][0].b0-k)+s[i-1][0].c;
+                  t2=abs(s[i-1][1].b0-k)+s[i-1][1].c;
+                  if(t1<t2){
+                            s[i][0].c=t1;
+                            s[i][0].tb=0;
+                            s[i][0].b0=k;
+                            s[i][0].b1=s[i-1][0].b1;
+                            }else{
+                            s[i][0].c=t2;
+                            s[i][0].tb=1;
+                            s[i][0].b0=k;
+                            s[i][0].b1=s[i-1][1].b1;
+                            }
+                  t1=abs(s[i-1][0].b1-k)+s[i-1][0].c;
+                  t2=abs(s[i-1][1].b1-k)+s[i-1][1].c;
+                  if(t1<t2){
+                            s[i][1].c=t1;
+                            s[i][1].tb=0;
+                            s[i][1].b0=s[i-1][0].b0;
+                            s[i][1].b1=k;
+                            }else{
+                            s[i][1].c=t2;
+                            s[i][1].tb=1;
+                            s[i][1].b0=s[i-1][1].b0;
+                            s[i][1].b1=k;
+                            }
+                  }else{
+                            s[i][1].c=abs(s[i-1][0].b1-k)+s[i-1][0].c;
+                            s[i][1].tb=0;
+                            s[i][1].b0=s[i-1][0].b0;
+                            s[i][1].b1=k;
+                            s[i][0].c=abs(s[i-1][1].b0-k)+s[i-1][1].c;
+                            s[i][0].tb=1;
+                            s[i][0].b0=k;
+                            s[i][0].b1=s[i-1][0].b1;
+                        }
+                  t=j;
+                  }
+t1=s[n][1].c+abs(s[n][1].b1-10)+abs(s[n][1].b0-10);
+t2=s[n][0].c+abs(s[n][0].b1-10)+abs(s[n][0].b0-10);
+if(t1<=t2){
+          t1+=n*15;
+          printf("%d\n",t1);
+          t=1;
+          for(i=n;i>=1;i--){
+                            back[i]=s[i][t].tb;
+                            t=s[i][t].tb;
+                            }
+          for(i=1;i<=n;i++){
+                            printf("%d\n",(int)back[i]+1);
+                            }
+          }else{
+          t2+=n*15;
+          printf("%d\n",t2);
+          t=0;
+          for(i=n;i>=1;i--){
+                            back[i]=s[i][t].tb;
+                            t=s[i][t].tb;
+                            }
+          for(i=1;i<=n;i++){
+                            printf("%d\n",(int)back[i]+1);
+                            }
+          }
+}
+}
